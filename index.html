@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#090909">
-  <title>eldjay1337</title>
-  <meta name="description" content="eldjay1337 — discord bio">
+  <title>depre??ed</title>
+  <meta name="description" content="depre??ed — discord bio">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -13,29 +13,32 @@
 </head>
 <body>
   <canvas id="particles"></canvas>
-  <div class="bg-img"></div>
+  <div class="bg-img" id="bg-img"></div>
   <div class="vignette"></div>
   <div class="cursor-glow" id="cursor-glow"></div>
 
   <!-- enter splash -->
   <div class="enter" id="enter">
-    <div class="enter-name sparkle-text">ELDJAY1337</div>
-    <div class="enter-hint">[ click to enter ]</div>
+    <div class="enter-name sparkle-text" id="enter-name">DEPRE??ED</div>
+    <div class="enter-sub" id="enter-sub">никуда не спешу</div>
+    <div class="enter-loading"><div class="enter-loading-fill" id="loading-fill"></div></div>
+    <div class="enter-hint hidden" id="enter-hint">[ click to enter ]</div>
   </div>
 
   <main class="card" id="card">
     <div class="avatar-wrap">
-      <img id="avatar" class="avatar" src="https://cdn.discordapp.com/embed/avatars/5.png" alt="avatar" draggable="false">
+      <img id="avatar" class="avatar" src="https://cdn.discordapp.com/avatars/1426335709333291048/200e5998580869826019a400501a3ab6.png?size=256" alt="avatar" draggable="false">
       <span id="status-dot" class="status-dot offline"></span>
     </div>
 
-    <h1 class="name sparkle-text" id="name">ELDJAY1337</h1>
+    <h1 class="name" id="name"><span class="sparkle-text" id="name-main">DEPRE??ED</span></h1>
+    <p class="name-sub" id="name-sub">никуда не спешу</p>
 
     <!-- бейджи — редактируй здесь -->
     <div class="badges">
+      <span class="badge" id="badge-handle">@sadgirlsyndrom3</span>
       <span class="badge">1337</span>
       <span class="badge">DISCORD</span>
-      <span class="badge">ELDJAY</span>
     </div>
 
     <!-- подсвеченные строки — редактируй здесь -->
@@ -70,6 +73,9 @@
 
   <!-- music player -->
   <div class="player hidden" id="player">
+    <div class="disc" id="disc">
+      <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6Z"/></svg>
+    </div>
     <button class="p-btn" id="prev" type="button" title="prev">
       <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 6h2v12H6V6Zm3.5 6 8.5 6V6l-8.5 6Z"/></svg>
     </button>
@@ -81,12 +87,13 @@
     </button>
     <div class="track">
       <span class="track-title" id="track-title">no tracks</span>
+      <div class="seek" id="seek"><div class="seek-fill" id="seek-fill"></div></div>
       <span class="track-time" id="track-time"></span>
     </div>
     <input class="volume" id="volume" type="range" min="0" max="100" value="45" title="volume">
   </div>
 
-  <footer class="footer">eldjay1337<span id="views"></span></footer>
+  <footer class="footer"><span id="footer-name">sadgirlsyndrom3</span><span id="views"></span></footer>
 
   <script src="playlist.js"></script>
   <script src="script.js"></script>

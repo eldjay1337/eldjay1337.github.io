@@ -35,10 +35,12 @@ input { user-select: auto; -webkit-user-select: auto; }
 
 .bg-img {
   position: fixed;
-  inset: 0;
+  inset: -30px; /* запас под параллакс */
   z-index: -3;
   background: url("bg.jpg") center / cover no-repeat;
   opacity: 0.55;
+  will-change: transform;
+  transition: transform 0.3s ease-out;
 }
 
 .vignette {
@@ -64,7 +66,7 @@ input { user-select: auto; -webkit-user-select: auto; }
   z-index: 1;
 }
 
-/* ---------- sparkle text (имя с искрами) ---------- */
+/* ---------- sparkle text ---------- */
 .sparkle-text {
   background-image: url("sparkles.gif");
   background-size: 130px;
@@ -84,7 +86,8 @@ input { user-select: auto; -webkit-user-select: auto; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 26px;
+  gap: 18px;
+  padding: 0 20px;
   background: rgba(5, 5, 5, 0.55);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -93,10 +96,39 @@ input { user-select: auto; -webkit-user-select: auto; }
 }
 
 .enter-name {
-  font-size: clamp(1.6rem, 6vw, 3.4rem);
+  font-size: clamp(1.4rem, 6.5vw, 3.2rem);
   font-weight: 800;
   letter-spacing: 3px;
+  text-align: center;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  max-width: 92vw;
   animation: float 3.5s ease-in-out infinite, flicker 8s linear infinite;
+}
+
+.enter-sub {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  color: var(--muted);
+  letter-spacing: 3px;
+  margin-top: -6px;
+}
+
+.enter-loading {
+  width: min(240px, 60vw);
+  height: 2px;
+  margin-top: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.enter-loading-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  transition: width 0.18s ease;
 }
 
 .enter-hint {
@@ -104,6 +136,7 @@ input { user-select: auto; -webkit-user-select: auto; }
   font-size: 0.85rem;
   color: var(--muted);
   letter-spacing: 2px;
+  margin-top: 12px;
   animation: pulse-soft 1.6s ease-in-out infinite;
 }
 
@@ -178,20 +211,21 @@ body.entered .card > * {
 }
 
 body.entered .card > *:nth-child(1) { animation-delay: 0.10s; }
-body.entered .card > *:nth-child(2) { animation-delay: 0.18s; }
-body.entered .card > *:nth-child(3) { animation-delay: 0.26s; }
-body.entered .card > *:nth-child(4) { animation-delay: 0.34s; }
-body.entered .card > *:nth-child(5) { animation-delay: 0.42s; }
-body.entered .card > *:nth-child(6) { animation-delay: 0.50s; }
-body.entered .card > *:nth-child(7) { animation-delay: 0.58s; }
-body.entered .card > *:nth-child(8) { animation-delay: 0.66s; }
-body.entered .card > *:nth-child(9) { animation-delay: 0.74s; }
+body.entered .card > *:nth-child(2) { animation-delay: 0.17s; }
+body.entered .card > *:nth-child(3) { animation-delay: 0.24s; }
+body.entered .card > *:nth-child(4) { animation-delay: 0.31s; }
+body.entered .card > *:nth-child(5) { animation-delay: 0.38s; }
+body.entered .card > *:nth-child(6) { animation-delay: 0.45s; }
+body.entered .card > *:nth-child(7) { animation-delay: 0.52s; }
+body.entered .card > *:nth-child(8) { animation-delay: 0.59s; }
+body.entered .card > *:nth-child(9) { animation-delay: 0.66s; }
+body.entered .card > *:nth-child(10) { animation-delay: 0.73s; }
 
 @keyframes rise {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- avatar (squircle, как на референсе) ---------- */
+/* ---------- avatar ---------- */
 .avatar-wrap {
   position: relative;
   width: 118px;
@@ -233,11 +267,23 @@ body.entered .card > *:nth-child(9) { animation-delay: 0.74s; }
 
 /* ---------- name ---------- */
 .name {
-  font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+  font-size: clamp(1.3rem, 4.2vw, 2rem);
   font-weight: 800;
   letter-spacing: 2px;
-  margin-bottom: 14px;
-  overflow-wrap: break-word;
+  margin-bottom: 6px;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.name.long { font-size: clamp(1.05rem, 3.4vw, 1.5rem); letter-spacing: 1px; }
+
+.name-sub {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  min-height: 1em;
 }
 
 /* ---------- badges ---------- */
@@ -433,7 +479,7 @@ body.entered .card > *:nth-child(9) { animation-delay: 0.74s; }
   to   { transform: scaleY(1); }
 }
 
-/* ---------- socials (иконки с тултипами, как на референсе) ---------- */
+/* ---------- socials ---------- */
 .socials {
   display: flex;
   gap: 14px;
@@ -511,6 +557,29 @@ body.entered .player {
   transform: translateY(0);
 }
 
+/* крутящийся диск */
+.disc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  flex-shrink: 0;
+  animation: disc-spin 3s linear infinite;
+  animation-play-state: paused;
+  transition: box-shadow 0.3s;
+}
+
+.disc.playing {
+  animation-play-state: running;
+  box-shadow: 0 0 14px rgba(255, 0, 0, 0.35);
+}
+
+@keyframes disc-spin { to { transform: rotate(360deg); } }
+
 .p-btn {
   display: inline-flex;
   align-items: center;
@@ -534,7 +603,7 @@ body.entered .player {
 .track {
   display: flex;
   flex-direction: column;
-  max-width: 190px;
+  width: 170px;
 }
 
 .track-title {
@@ -543,6 +612,23 @@ body.entered .player {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* сик-бар плеера */
+.seek {
+  height: 3px;
+  margin: 6px 0 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+}
+
+.seek-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
 }
 
 .track-time {
@@ -578,7 +664,7 @@ body.entered .footer { opacity: 0.75; }
   .card { padding: 30px 20px 26px; }
   .cursor-glow { display: none; }
   .player { left: 10px; bottom: 10px; padding: 8px 10px; }
-  .track { max-width: 120px; }
+  .track { width: 110px; }
   .volume { display: none; }
   .footer { right: 12px; bottom: 12px; }
 }
