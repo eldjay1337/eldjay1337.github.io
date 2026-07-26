@@ -1,0 +1,10 @@
+{
+  "name": "eldjay1337-bio",
+  "private": true,
+  "scripts": {
+    "build": "javascript-obfuscator script.src.js --output script.js --options-preset medium-obfuscation"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^4.1.0"
+  }
+}

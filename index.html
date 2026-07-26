@@ -3,54 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090909">
   <title>eldjay1337</title>
-  <meta name="description" content="eldjay1337 — bio">
+  <meta name="description" content="eldjay1337 — discord bio">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- animated background -->
-  <div class="bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+  <canvas id="particles"></canvas>
+  <div class="bg-img"></div>
+  <div class="vignette"></div>
+
+  <!-- enter splash -->
+  <div class="enter" id="enter">
+    <div class="enter-name sparkle-text">ELDJAY1337</div>
+    <div class="enter-hint">[ click to enter ]</div>
   </div>
 
   <main class="card" id="card">
     <div class="avatar-wrap">
-      <img id="avatar" class="avatar" src="https://avatars.githubusercontent.com/u/309374668?v=4" alt="avatar">
+      <img id="avatar" class="avatar" src="https://avatars.githubusercontent.com/u/309374668?v=4" alt="avatar" draggable="false">
       <span id="status-dot" class="status-dot offline"></span>
     </div>
 
-    <h1 class="name">eldjay1337</h1>
-    <p class="tag" id="presence-text">connecting to discord…</p>
+    <h1 class="name sparkle-text" id="name">ELDJAY1337</h1>
 
-    <!-- live discord activity (hidden until data arrives) -->
+    <!-- бейджи — редактируй здесь -->
+    <div class="badges">
+      <span class="badge">1337</span>
+      <span class="badge">DISCORD</span>
+      <span class="badge">ELDJAY</span>
+    </div>
+
+    <!-- подсвеченные строки — редактируй здесь -->
+    <div class="hl-lines">
+      <span class="hl">DISCORD CONNECTED</span>
+      <span class="hl">ЖИВОЙ СТАТУС 24/7</span>
+    </div>
+
+    <p class="typing"><span id="typed"></span><span class="caret"></span></p>
+
+    <p class="presence"><span class="presence-label">status:</span> <span id="presence-text">connecting…</span></p>
+    <p class="custom-status hidden" id="custom-status"></p>
+
+    <!-- live discord activity -->
     <div class="activity hidden" id="activity">
       <img id="activity-img" class="activity-img hidden" src="" alt="">
       <div class="activity-info">
         <span class="activity-label" id="activity-label"></span>
         <span class="activity-title" id="activity-title"></span>
         <span class="activity-sub" id="activity-sub"></span>
+        <div class="progress hidden" id="progress"><div class="progress-fill" id="progress-fill"></div></div>
       </div>
+      <div class="eq hidden" id="eq"><span></span><span></span><span></span><span></span></div>
     </div>
 
     <div class="links">
-      <a class="btn" href="https://discord.com/users/1426335709333291048" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20.32 4.37a19.8 19.8 0 0 0-4.93-1.51 13.8 13.8 0 0 0-.64 1.28 18.3 18.3 0 0 0-5.5 0 13.8 13.8 0 0 0-.64-1.28c-1.71.29-3.37.8-4.93 1.51A20.3 20.3 0 0 0 .1 18.06a19.9 19.9 0 0 0 6.07 3.03c.49-.66.93-1.37 1.3-2.1a12.9 12.9 0 0 1-2.05-.98c.17-.12.34-.25.5-.38a14.2 14.2 0 0 0 12.16 0c.16.13.33.26.5.38-.65.38-1.34.71-2.05.98.37.73.81 1.44 1.3 2.1a19.9 19.9 0 0 0 6.07-3.03 20.3 20.3 0 0 0-3.58-13.69ZM8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42s.95-2.42 2.16-2.42 2.18 1.09 2.16 2.42c0 1.34-.95 2.42-2.16 2.42Zm7.96 0c-1.18 0-2.16-1.08-2.16-2.42s.95-2.42 2.16-2.42 2.18 1.09 2.16 2.42c0 1.34-.95 2.42-2.16 2.42Z"/></svg>
+      <a class="btn btn-discord" href="https://discord.com/users/1426335709333291048" target="_blank" rel="noopener" draggable="false">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20.32 4.37a19.8 19.8 0 0 0-4.93-1.51 13.8 13.8 0 0 0-.64 1.28 18.3 18.3 0 0 0-5.5 0 13.8 13.8 0 0 0-.64-1.28c-1.71.29-3.37.8-4.93 1.51A20.3 20.3 0 0 0 .1 18.06a19.9 19.9 0 0 0 6.07 3.03c.49-.66.93-1.37 1.3-2.1a12.9 12.9 0 0 1-2.05-.98c.17-.12.34-.25.5-.38a14.2 14.2 0 0 0 12.16 0c.16.13.33.26.5.38-.65.38-1.34.71-2.05.98.37.73.81 1.44 1.3 2.1a19.9 19.9 0 0 0 6.07-3.03 20.3 20.3 0 0 0-3.58-13.69ZM8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42s.95-2.42 2.16-2.42 2.18 1.09 2.16 2.42c0 1.34-.95 2.42-2.16 2.42Zm7.96 0c-1.18 0-2.16-1.08-2.16-2.42s.95-2.42 2.16-2.42 2.18 1.09 2.16 2.42c0 1.34-.95 2.42-2.16 2.42Z"/></svg>
         Discord
       </a>
-      <a class="btn" href="https://github.com/eldjay1337" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.1 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg>
-        GitHub
-      </a>
+      <button class="btn btn-copy" id="copy-id" type="button">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 16H8V7h11v14Z"/></svg>
+        <span id="copy-label">Copy ID</span>
+      </button>
     </div>
   </main>
 
-  <footer class="footer">© eldjay1337</footer>
+  <!-- music player -->
+  <div class="player hidden" id="player">
+    <button class="p-btn" id="prev" type="button" title="prev">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 6h2v12H6V6Zm3.5 6 8.5 6V6l-8.5 6Z"/></svg>
+    </button>
+    <button class="p-btn" id="play" type="button" title="play/pause">
+      <svg id="play-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
+    </button>
+    <button class="p-btn" id="next" type="button" title="next">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M16 6h2v12h-2V6ZM6 18l8.5-6L6 6v12Z"/></svg>
+    </button>
+    <div class="track">
+      <span class="track-title" id="track-title">no tracks</span>
+      <span class="track-time" id="track-time"></span>
+    </div>
+    <input class="volume" id="volume" type="range" min="0" max="100" value="45" title="volume">
+  </div>
 
+  <footer class="footer">eldjay1337<span id="views"></span></footer>
+
+  <script src="playlist.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
