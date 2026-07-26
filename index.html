@@ -30,16 +30,29 @@
     <div class="enter-name" id="enter-name" data-text="DEPRE??ED">DEPRE??ED</div>
     <div class="enter-sub" id="enter-sub">никуда не спешу</div>
     <div class="enter-loading"><div class="enter-loading-fill" id="loading-fill"></div></div>
+    <div class="enter-pct" id="enter-pct">0%</div>
     <div class="enter-hint hidden" id="enter-hint">[ click or press any key ]</div>
   </div>
 
   <main class="card" id="card">
+    <!-- nameplate из discord collectibles -->
+    <video class="nameplate" autoplay muted loop playsinline disablepictureinpicture>
+      <source src="https://cdn.discordapp.com/assets/collectibles/nameplates/tarot/manifesting_magic/asset.webm" type="video/webm">
+    </video>
+
     <div class="avatar-wrap">
       <img id="avatar" class="avatar" src="https://cdn.discordapp.com/avatars/1426335709333291048/200e5998580869826019a400501a3ab6.png?size=256" alt="avatar" draggable="false">
+      <img id="avatar-deco" class="avatar-deco" src="https://cdn.discordapp.com/avatar-decoration-presets/a_a78819f4d41900aa7698a1bafaf6af41.png" alt="" draggable="false">
       <span id="status-dot" class="status-dot offline"></span>
     </div>
 
     <h1 class="name" id="name"><span id="name-main">DEPRE??ED</span></h1>
+
+    <div class="clan" id="clan">
+      <img id="clan-badge" src="https://cdn.discordapp.com/clan-badges/1518745235130159225/b3b3aa7cd2cc6ac2256de6376e3f74f4.png" alt="">
+      <span id="clan-tag">NZ</span>
+    </div>
+
     <p class="name-sub" id="name-sub">никуда не спешу</p>
 
     <!-- бейджи — редактируй здесь -->
@@ -100,6 +113,9 @@
     </div>
     <input class="volume" id="volume" type="range" min="0" max="100" value="45" title="volume">
   </div>
+
+  <!-- тост при смене трека -->
+  <div class="toast" id="toast"></div>
 
   <footer class="footer"><span id="footer-name">sadgirlsyndrom3</span><span id="views"></span></footer>
 

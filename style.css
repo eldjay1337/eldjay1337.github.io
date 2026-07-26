@@ -848,3 +848,124 @@ body.entered .footer { opacity: 0.75; }
   .volume { display: none; }
   .footer { right: 12px; bottom: 12px; }
 }
+
+/* ============================================================
+   ROUND 3 — всякое
+   ============================================================ */
+
+/* бас-реактивное свечение (--bass ставит визуализатор) */
+.cursor-glow { scale: calc(1 + var(--bass, 0) * 0.55); }
+.avatar { box-shadow: 0 0 calc(30px + var(--bass, 0) * 45px) var(--status-glow); }
+
+/* неоновый след курсора (canvas создаётся из JS) */
+#trail {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+}
+
+/* декорация аватарки */
+.avatar-deco {
+  position: absolute;
+  left: -11%;
+  top: -11%;
+  width: 122%;
+  height: 122%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* клан-тег */
+.clan {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 2px 0 4px;
+  padding: 3px 9px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+
+.clan img { width: 15px; height: 15px; border-radius: 3px; }
+
+/* неймплейт (видео-фон шапки карточки) */
+.nameplate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  z-index: -1;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 30%, transparent 100%);
+}
+
+/* проценты загрузки */
+.enter-pct {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 2px;
+}
+
+/* тост при смене трека */
+.toast {
+  position: fixed;
+  bottom: 96px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  z-index: 45;
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(12, 12, 16, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  color: var(--text);
+  white-space: nowrap;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* периодический глитч имени в карточке */
+.name.glitching .ch {
+  text-shadow: -3px 0 rgba(0, 255, 255, 0.7), 3px 0 rgba(255, 0, 0, 0.8);
+}
+
+.name.glitching { transform: skewX(2deg); }
+
+/* KONAMI party mode */
+body.party #rain { filter: brightness(1.9) saturate(1.4); }
+body.party #visualizer { height: 130px; }
+body.party .card { animation: card-shake 0.35s linear infinite; }
+body.party .cursor-glow { opacity: 0.9; }
+
+@keyframes card-shake {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(2px, -2px); }
+  50%      { transform: translate(-2px, 1px); }
+  75%      { transform: translate(1px, 2px); }
+}
