@@ -1,43 +1,11 @@
 /* ============ ПЛЕЙЛИСТ ============
-   Кидай mp3 в папку music/ с именами 01.mp3, 02.mp3, ... по этому списку.
-   Плеер сам пропустит отсутствующие файлы и зациклит остальные.
-   Порядок можно менять — название трека в плеере берётся отсюда. */
+   Чтобы добавить трек: кидай mp3 в папку music/ (05.mp3, 06.mp3, ...)
+   и дописывай строку в список ниже. Плеер сам пропустит отсутствующие
+   файлы и зациклит плейлист. */
 
 const PLAYLIST = [
-  { file: "music/01.mp3", title: "Салют, Вера" },
-  { file: "music/02.mp3", title: "Холод и Апатия" },
-  { file: "music/03.mp3", title: "Боже, какой пустяк" },
-  { file: "music/04.mp3", title: "Дождик" },
-  { file: "music/05.mp3", title: "Мой рай" },
-  { file: "music/06.mp3", title: "Степень Искренности (remix)" },
-  { file: "music/07.mp3", title: "Гипнозы" },
-  { file: "music/08.mp3", title: "Одиночество" },
-  { file: "music/09.mp3", title: "Машина" },
-  { file: "music/10.mp3", title: "Таблетка" },
-  { file: "music/11.mp3", title: "Искры хрома" },
-  { file: "music/12.mp3", title: "Sad girl syndrome" },
-  { file: "music/13.mp3", title: "убей меня, обведи мелом" },
-  { file: "music/14.mp3", title: "Танцуйте" },
-  { file: "music/15.mp3", title: "письмо (remix)" },
-  { file: "music/16.mp3", title: "Мокрый район" },
-  { file: "music/17.mp3", title: "Звёзды в лужах" },
-  { file: "music/18.mp3", title: "Здравствуй, мама" },
-  { file: "music/19.mp3", title: "Один" },
-  { file: "music/20.mp3", title: "Psycho Dreams" },
-  { file: "music/21.mp3", title: "Брат не засыпай" },
-  { file: "music/22.mp3", title: "Никотин" },
-  { file: "music/23.mp3", title: "Сокровище" },
-  { file: "music/24.mp3", title: "Остров" },
-  { file: "music/25.mp3", title: "Уходи" },
-  { file: "music/26.mp3", title: "Чистый лист" },
-  { file: "music/27.mp3", title: "Такая разная любовь" },
-  { file: "music/28.mp3", title: "дождь по щекам" },
-  { file: "music/29.mp3", title: "Поломан" },
-  { file: "music/30.mp3", title: "Ты так красива" },
-  { file: "music/31.mp3", title: "Ревную" },
-  { file: "music/32.mp3", title: "Карие глаза" },
-  { file: "music/33.mp3", title: "Ты Не Блять Ты Шалава" },
-  { file: "music/34.mp3", title: "Яд" },
-  { file: "music/35.mp3", title: "Дыхание Улиц" },
-  { file: "music/36.mp3", title: "Небеса" },
+  { file: "music/01.mp3", title: "Элджей — Экстази" },
+  { file: "music/02.mp3", title: "Элджей — Ультрамариновые танцы" },
+  { file: "music/03.mp3", title: "NJENSI — Чистый лист" },
+  { file: "music/04.mp3", title: "Onlife — Дождь по щекам" },
 ];
