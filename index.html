@@ -12,17 +12,23 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="particles"></canvas>
   <div class="bg-img" id="bg-img"></div>
+  <canvas id="rain"></canvas>
+  <canvas id="particles"></canvas>
+  <canvas id="visualizer"></canvas>
   <div class="vignette"></div>
   <div class="cursor-glow" id="cursor-glow"></div>
+
+  <!-- hud -->
+  <div class="hud hud-tl">depre??ed</div>
+  <div class="hud hud-tr" id="clock">00:00:00</div>
 
   <!-- enter splash -->
   <div class="enter" id="enter">
     <div class="enter-name sparkle-text" id="enter-name">DEPRE??ED</div>
     <div class="enter-sub" id="enter-sub">никуда не спешу</div>
     <div class="enter-loading"><div class="enter-loading-fill" id="loading-fill"></div></div>
-    <div class="enter-hint hidden" id="enter-hint">[ click to enter ]</div>
+    <div class="enter-hint hidden" id="enter-hint">[ click or press any key ]</div>
   </div>
 
   <main class="card" id="card">
@@ -31,7 +37,7 @@
       <span id="status-dot" class="status-dot offline"></span>
     </div>
 
-    <h1 class="name" id="name"><span class="sparkle-text" id="name-main">DEPRE??ED</span></h1>
+    <h1 class="name" id="name"><span id="name-main">DEPRE??ED</span></h1>
     <p class="name-sub" id="name-sub">никуда не спешу</p>
 
     <!-- бейджи — редактируй здесь -->
@@ -76,13 +82,13 @@
     <div class="disc" id="disc">
       <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6Z"/></svg>
     </div>
-    <button class="p-btn" id="prev" type="button" title="prev">
+    <button class="p-btn" id="prev" type="button" title="prev [←]">
       <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 6h2v12H6V6Zm3.5 6 8.5 6V6l-8.5 6Z"/></svg>
     </button>
-    <button class="p-btn" id="play" type="button" title="play/pause">
+    <button class="p-btn" id="play" type="button" title="play/pause [space]">
       <svg id="play-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7L8 5Z"/></svg>
     </button>
-    <button class="p-btn" id="next" type="button" title="next">
+    <button class="p-btn" id="next" type="button" title="next [→]">
       <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M16 6h2v12h-2V6ZM6 18l8.5-6L6 6v12Z"/></svg>
     </button>
     <div class="track">

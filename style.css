@@ -31,22 +31,35 @@ body {
 input { user-select: auto; -webkit-user-select: auto; }
 
 /* ---------- background layers ---------- */
-#particles { position: fixed; inset: 0; z-index: -1; }
-
 .bg-img {
   position: fixed;
   inset: -30px; /* запас под параллакс */
-  z-index: -3;
+  z-index: -4;
   background: url("bg.jpg") center / cover no-repeat;
   opacity: 0.55;
   will-change: transform;
   transition: transform 0.3s ease-out;
 }
 
+#rain { position: fixed; inset: 0; z-index: -3; }
+
+#particles { position: fixed; inset: 0; z-index: -2; }
+
+#visualizer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 80px;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .vignette {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -1;
   background: radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.8) 100%);
   pointer-events: none;
 }
@@ -66,8 +79,26 @@ input { user-select: auto; -webkit-user-select: auto; }
   z-index: 1;
 }
 
+/* ---------- HUD ---------- */
+.hud {
+  position: fixed;
+  top: 16px;
+  z-index: 30;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 0.5s ease 0.4s;
+}
+
+.hud-tl { left: 20px; }
+.hud-tr { right: 20px; }
+
+body.entered .hud { opacity: 0.7; }
+
 /* ---------- sparkle text ---------- */
-.sparkle-text {
+.sparkle-text, .name .ch {
   background-image: url("sparkles.gif");
   background-size: 130px;
   -webkit-background-clip: text;
@@ -166,6 +197,8 @@ body.entered .enter {
 /* ---------- card ---------- */
 .card {
   position: relative;
+  z-index: 2;
+  overflow: hidden;
   width: min(681px, calc(100vw - 32px));
   background:
     radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 0, 0, 0.09), transparent 60%),
@@ -192,12 +225,29 @@ body.entered .enter {
   right: 12%;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.65), transparent);
+  z-index: 1;
 }
 
 body.entered .card {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+/* ripple по клику на карточку */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 0, 0, 0.3), transparent 60%);
+  animation: ripple 0.65s ease-out forwards;
+  z-index: 0;
+}
+
+@keyframes ripple {
+  from { width: 0; height: 0; opacity: 1; }
+  to   { width: 300px; height: 300px; opacity: 0; }
 }
 
 /* стаггер-появление содержимого карточки */
@@ -233,6 +283,22 @@ body.entered .card > *:nth-child(10) { animation-delay: 0.73s; }
   margin: 0 auto 18px;
 }
 
+/* пульс-кольцо во время игры музыки */
+body.playing .avatar-wrap::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  animation: ring-pulse 1.8s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ring-pulse {
+  0%   { transform: scale(0.95); opacity: 0.8; }
+  100% { transform: scale(1.14); opacity: 0; }
+}
+
 .avatar {
   width: 118px;
   height: 118px;
@@ -265,7 +331,7 @@ body.entered .card > *:nth-child(10) { animation-delay: 0.73s; }
   50%      { box-shadow: 0 0 0 7px rgba(59, 165, 93, 0); }
 }
 
-/* ---------- name ---------- */
+/* ---------- name (посимвольная волна) ---------- */
 .name {
   font-size: clamp(1.3rem, 4.2vw, 2rem);
   font-weight: 800;
@@ -276,6 +342,35 @@ body.entered .card > *:nth-child(10) { animation-delay: 0.73s; }
 }
 
 .name.long { font-size: clamp(1.05rem, 3.4vw, 1.5rem); letter-spacing: 1px; }
+
+.name .ch {
+  display: inline-block;
+  transition: transform 0.25s ease;
+  white-space: pre;
+}
+
+.name:hover .ch { transform: translateY(-7px); }
+
+.name .ch:nth-child(1)  { transition-delay: 0.00s; }
+.name .ch:nth-child(2)  { transition-delay: 0.03s; }
+.name .ch:nth-child(3)  { transition-delay: 0.06s; }
+.name .ch:nth-child(4)  { transition-delay: 0.09s; }
+.name .ch:nth-child(5)  { transition-delay: 0.12s; }
+.name .ch:nth-child(6)  { transition-delay: 0.15s; }
+.name .ch:nth-child(7)  { transition-delay: 0.18s; }
+.name .ch:nth-child(8)  { transition-delay: 0.21s; }
+.name .ch:nth-child(9)  { transition-delay: 0.24s; }
+.name .ch:nth-child(10) { transition-delay: 0.27s; }
+.name .ch:nth-child(11) { transition-delay: 0.30s; }
+.name .ch:nth-child(12) { transition-delay: 0.33s; }
+.name .ch:nth-child(13) { transition-delay: 0.36s; }
+.name .ch:nth-child(14) { transition-delay: 0.39s; }
+.name .ch:nth-child(15) { transition-delay: 0.42s; }
+.name .ch:nth-child(16) { transition-delay: 0.45s; }
+.name .ch:nth-child(17) { transition-delay: 0.48s; }
+.name .ch:nth-child(18) { transition-delay: 0.51s; }
+.name .ch:nth-child(19) { transition-delay: 0.54s; }
+.name .ch:nth-child(20) { transition-delay: 0.57s; }
 
 .name-sub {
   font-family: "JetBrains Mono", monospace;
@@ -479,7 +574,7 @@ body.entered .card > *:nth-child(10) { animation-delay: 0.73s; }
   to   { transform: scaleY(1); }
 }
 
-/* ---------- socials ---------- */
+/* ---------- socials (магнитные иконки) ---------- */
 .socials {
   display: flex;
   gap: 14px;
@@ -497,14 +592,13 @@ body.entered .card > *:nth-child(10) { animation-delay: 0.73s; }
   color: var(--text);
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.04);
-  transition: transform 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .soc:hover {
   color: var(--accent);
   border-color: var(--accent);
   box-shadow: 0 0 24px rgba(255, 0, 0, 0.4);
-  transform: translateY(-3px) scale(1.08);
 }
 
 .soc::after {
@@ -604,14 +698,22 @@ body.entered .player {
   display: flex;
   flex-direction: column;
   width: 170px;
+  overflow: hidden;
 }
 
 .track-title {
   font-size: 0.68rem;
   font-weight: 600;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+/* бегущая строка для длинных названий */
+.track-title.marquee { animation: track-marq 9s linear infinite; }
+
+@keyframes track-marq {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 /* сик-бар плеера */
@@ -654,6 +756,7 @@ body.entered .player {
   color: var(--muted);
   opacity: 0;
   transition: opacity 0.45s ease 0.25s;
+  z-index: 30;
 }
 
 body.entered .footer { opacity: 0.75; }
