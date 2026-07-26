@@ -49,6 +49,21 @@ input { user-select: auto; -webkit-user-select: auto; }
   pointer-events: none;
 }
 
+/* красное свечение, следующее за курсором */
+.cursor-glow {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 0, 0, 0.12), transparent 65%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 1;
+}
+
 /* ---------- sparkle text (имя с искрами) ---------- */
 .sparkle-text {
   background-image: url("sparkles.gif");
@@ -81,7 +96,7 @@ input { user-select: auto; -webkit-user-select: auto; }
   font-size: clamp(1.6rem, 6vw, 3.4rem);
   font-weight: 800;
   letter-spacing: 3px;
-  animation: float 3.5s ease-in-out infinite;
+  animation: float 3.5s ease-in-out infinite, flicker 8s linear infinite;
 }
 
 .enter-hint {
@@ -107,15 +122,24 @@ body.entered .enter {
   50%      { transform: translateY(-8px); }
 }
 
+/* редкий rgb-глитч на заставке */
+@keyframes flicker {
+  0%, 91%, 95%, 100% { text-shadow: none; opacity: 1; }
+  92% { text-shadow: -3px 0 rgba(0, 255, 255, 0.7), 3px 0 rgba(255, 0, 0, 0.8); opacity: 0.75; }
+  93% { text-shadow: 3px 0 rgba(0, 255, 255, 0.7), -3px 0 rgba(255, 0, 0, 0.8); opacity: 1; }
+  94% { text-shadow: -2px 0 rgba(0, 255, 255, 0.5), 2px 0 rgba(255, 0, 0, 0.6); opacity: 0.85; }
+}
+
 /* ---------- card ---------- */
 .card {
+  position: relative;
   width: min(681px, calc(100vw - 32px));
   background:
-    radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 0, 0, 0.08), transparent 60%),
+    radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 0, 0, 0.09), transparent 60%),
     var(--box);
   border: 1px solid var(--border);
   border-radius: 31px;
-  padding: 38px 35px 32px;
+  padding: 40px 35px 34px;
   text-align: center;
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
@@ -126,10 +150,45 @@ body.entered .enter {
   transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.15);
 }
 
+/* красная блик-линия сверху карточки */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.65), transparent);
+}
+
 body.entered .card {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+/* стаггер-появление содержимого карточки */
+.card > * {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+body.entered .card > * {
+  animation: rise 0.55s cubic-bezier(0.2, 0.8, 0.3, 1.1) forwards;
+}
+
+body.entered .card > *:nth-child(1) { animation-delay: 0.10s; }
+body.entered .card > *:nth-child(2) { animation-delay: 0.18s; }
+body.entered .card > *:nth-child(3) { animation-delay: 0.26s; }
+body.entered .card > *:nth-child(4) { animation-delay: 0.34s; }
+body.entered .card > *:nth-child(5) { animation-delay: 0.42s; }
+body.entered .card > *:nth-child(6) { animation-delay: 0.50s; }
+body.entered .card > *:nth-child(7) { animation-delay: 0.58s; }
+body.entered .card > *:nth-child(8) { animation-delay: 0.66s; }
+body.entered .card > *:nth-child(9) { animation-delay: 0.74s; }
+
+@keyframes rise {
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ---------- avatar (squircle, как на референсе) ---------- */
@@ -148,8 +207,10 @@ body.entered .card {
   background: #111;
   border: 1px solid var(--border);
   box-shadow: 0 0 34px var(--status-glow);
-  transition: box-shadow 0.4s;
+  transition: box-shadow 0.4s, transform 0.3s;
 }
+
+.avatar-wrap:hover .avatar { transform: scale(1.04) rotate(-1.5deg); }
 
 .status-dot {
   position: absolute;
@@ -221,6 +282,12 @@ body.entered .card {
   background: rgba(128, 0, 0, 0.55);
   border-radius: 6px;
   padding: 4px 10px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.hl:hover {
+  background: rgba(255, 0, 0, 0.55);
+  transform: translateY(-2px);
 }
 
 /* ---------- typing / presence ---------- */
@@ -229,7 +296,7 @@ body.entered .card {
   font-size: 0.82rem;
   color: var(--muted);
   min-height: 1.4em;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .caret {
@@ -244,18 +311,34 @@ body.entered .card {
 
 @keyframes blink { 50% { opacity: 0; } }
 
+/* статус-пилюля */
 .presence {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.8rem;
+  font-size: 0.74rem;
   color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.04);
 }
 
-.presence-label { opacity: 0.55; }
+.presence::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status-color);
+  box-shadow: 0 0 10px var(--status-color);
+  transition: background 0.4s, box-shadow 0.4s;
+}
 
 #presence-text { color: var(--status-color); transition: color 0.4s; }
 
 .custom-status {
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 0.75rem;
   color: var(--text);
   opacity: 0.85;
@@ -350,43 +433,56 @@ body.entered .card {
   to   { transform: scaleY(1); }
 }
 
-/* ---------- buttons ---------- */
-.links {
+/* ---------- socials (иконки с тултипами, как на референсе) ---------- */
+.socials {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
   margin-top: 26px;
 }
 
-.btn {
+.soc {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 11px 22px;
+  justify-content: center;
+  padding: 10px;
   border-radius: 12px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.05);
   color: var(--text);
-  text-decoration: none;
-  font-family: inherit;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: transform 0.15s, background 0.2s, box-shadow 0.2s, border-color 0.2s;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  transition: transform 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
-.btn:hover {
-  transform: translateY(-2px) scale(1.03);
-  background: rgba(255, 0, 0, 0.18);
+.soc:hover {
+  color: var(--accent);
   border-color: var(--accent);
-  box-shadow: 0 8px 26px rgba(255, 0, 0, 0.35);
+  box-shadow: 0 0 24px rgba(255, 0, 0, 0.4);
+  transform: translateY(-3px) scale(1.08);
 }
 
-.btn-copy.copied {
-  background: rgba(59, 165, 93, 0.2);
-  border-color: #3ba55d;
-  box-shadow: 0 8px 26px rgba(59, 165, 93, 0.3);
+.soc::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px) scale(0.9);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.64rem;
+  color: #fff;
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 4px 10px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.soc:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 
 /* ---------- player ---------- */
@@ -404,6 +500,7 @@ body.entered .card {
   border-radius: 14px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 0.45s ease 0.15s, transform 0.45s ease 0.15s;
@@ -478,7 +575,8 @@ body.entered .footer { opacity: 0.75; }
 .hidden { display: none !important; }
 
 @media (max-width: 560px) {
-  .card { padding: 28px 20px 24px; }
+  .card { padding: 30px 20px 26px; }
+  .cursor-glow { display: none; }
   .player { left: 10px; bottom: 10px; padding: 8px 10px; }
   .track { max-width: 120px; }
   .volume { display: none; }
