@@ -91,9 +91,7 @@ body.cursor-hover .cursor-dot { scale: 0.6; }
   transition: transform 0.3s ease-out;
 }
 
-#rain { position: fixed; inset: 0; z-index: -3; }
-
-#particles { position: fixed; inset: 0; z-index: -2; }
+#fx { position: fixed; inset: 0; z-index: -3; }
 
 #visualizer {
   position: fixed;
@@ -958,7 +956,7 @@ body.entered .footer { opacity: 0.75; }
 .name.glitching { transform: skewX(2deg); }
 
 /* KONAMI party mode */
-body.party #rain { filter: brightness(1.9) saturate(1.4); }
+body.party #fx { filter: brightness(1.9) saturate(1.4); }
 body.party #visualizer { height: 130px; }
 body.party .card { animation: card-shake 0.35s linear infinite; }
 body.party .cursor-glow { opacity: 0.9; }
